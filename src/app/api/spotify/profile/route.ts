@@ -27,7 +27,7 @@ export async function GET() {
   });
 
   if (response.status === 401) {
-    clearSpotifyCookies();
+    await clearSpotifyCookies();
     return NextResponse.json(
       { message: "세션이 만료되었습니다." },
       { status: 401 },

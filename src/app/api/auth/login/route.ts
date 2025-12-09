@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const { codeChallenge, codeVerifier } = await createPkcePair();
     const state = randomState();
-    persistOAuthCookies({ state, codeVerifier });
+    await persistOAuthCookies({ state, codeVerifier });
     const authorizeUrl = await buildSpotifyAuthorizeUrl({ state, codeChallenge });
 
     return NextResponse.redirect(authorizeUrl);

@@ -70,7 +70,7 @@ const fetchPage = async ({
   });
 
   if (response.status === 401) {
-    clearSpotifyCookies();
+    await clearSpotifyCookies();
     throw new Error("unauthorized");
   }
 

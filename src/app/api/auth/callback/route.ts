@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
   const code = searchParams.get("code");
   const incomingState = searchParams.get("state");
-  const { state: storedState, codeVerifier } = readAndClearOauthState();
+  const { state: storedState, codeVerifier } = await readAndClearOauthState();
 
   if (!code || !incomingState || !codeVerifier) {
     return redirectToHome(request, { auth_error: "missing_params" });
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const tokens = await requestTokensWithCode({ code, codeVerifier });
-    persistSessionCookies(tokens);
+    await persistSessionCookies(tokens);
     return redirectToHome(request);
   } catch (error) {
     console.error("Spotify callback error", error);

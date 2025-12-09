@@ -128,7 +128,7 @@ export const refreshSpotifyAccessToken = async ({
 export const ensureAccessToken = async (): Promise<{
   accessToken: string | null;
 }> => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get(spotifyCookieKeys.accessToken)?.value;
   if (token) {
     return { accessToken: token };
@@ -156,14 +156,14 @@ export const ensureAccessToken = async (): Promise<{
   }
 };
 
-export const persistOAuthCookies = ({
+export const persistOAuthCookies = async ({
   state,
   codeVerifier,
 }: {
   state: string;
   codeVerifier: string;
 }) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const baseOptions = {
     httpOnly: true,
     secure: isProduction(),
@@ -182,7 +182,7 @@ export const persistOAuthCookies = ({
   });
 };
 
-export const persistSessionCookies = ({
+export const persistSessionCookies = async ({
   accessToken,
   refreshToken,
   expiresIn,
@@ -191,7 +191,7 @@ export const persistSessionCookies = ({
   refreshToken?: string;
   expiresIn: number;
 }) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const baseOptions = {
     httpOnly: true,
     secure: isProduction(),
@@ -212,15 +212,15 @@ export const persistSessionCookies = ({
   }
 };
 
-export const clearSpotifyCookies = () => {
-  const cookieStore = cookies();
+export const clearSpotifyCookies = async () => {
+  const cookieStore = await cookies();
   Object.values(spotifyCookieKeys).forEach((key) => {
     cookieStore.delete(key);
   });
 };
 
-export const readAndClearOauthState = () => {
-  const cookieStore = cookies();
+export const readAndClearOauthState = async () => {
+  const cookieStore = await cookies();
   const state = cookieStore.get(spotifyCookieKeys.state)?.value ?? null;
   const codeVerifier = cookieStore.get(spotifyCookieKeys.codeVerifier)?.value ?? null;
   cookieStore.delete(spotifyCookieKeys.state);
